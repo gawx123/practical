@@ -1,0 +1,334 @@
+<?php
+//Db_student_insert.php
+//mysqli_connect(servername,username,password,dbname);
+//$cn=mysqli_connect("localhost","root","root","mscit5");
+require_once("dbconnect.php");
+if (isset($_POST['s1']))
+{
+
+$name=$_POST['t1'];
+$course=$_POST['r1'];
+$sem=$_POST['cmbsem'];
+$sql="Insert into student values (0,'$name',$sem,'$course')";
+$res=mysqli_query($cn,$sql);
+//echo "Result $res";
+echo $sql;
+//header("Location:db_student_show.php");
+}
+
+?>
+<?php 
+include("header.php");
+?>
+
+<div class="row">
+            <div class="col-lg-8">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Student Insert</h4>
+
+<form method="post">
+	<p>StudentName </p>
+
+	<p><input type="text" name="t1" class="form-control"></p>
+	<p>course </p>
+	<p><input type="radio" name="r1" value="bscit" class="iradio_minimal"> BSc.It
+		<input type="radio" name="r1" value="mscit" class="iradio_minimal">MSc.It
+	</p>
+	<p>Semester </p>
+	<p><select name=cmbsem class="form-control">
+	<?php
+		for($i=1;$i<=6;$i++)
+		{
+		?>
+			<option><?php echo $i ?></option>	
+		<?php
+	    }
+		?>
+</select>
+	</p>
+	<p>
+		<input type="submit" class="btn btn-primary" name="s1" value="submit">
+	</p>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+<?php
+//$cn=mysqli_connect("localhost","root","root","mscit5");
+require_once("dbconnect.php");
+$rno="";
+$sname="";
+$sem="";
+$course="";
+//Update
+if (isset($_POST['s1']))
+{
+$rno=$_POST['txtrno'];
+$name=$_POST['t1'];
+$course=$_POST['r1'];
+$sem=$_POST['cmbsem'];
+$sql="update student set sname='$name',sem=$sem,course='$course' where rno=$rno";
+$res=mysqli_query($cn,$sql);
+//echo "Result $res";
+//echo $sql;
+header("Location:db_student_show.php");
+}
+
+//Searching a particular student
+if (isset($_REQUEST['rollno']))
+{
+	$rno=$_REQUEST['rollno'];
+	$searchsql="select * from student where rno=$rno";
+	$res1=mysqli_query($cn,$searchsql);
+	while ($row=mysqli_fetch_array($res1)) {
+		$rno=$row['rno'];
+		$sname=$row['sname'];
+		$sem=$row['sem'];
+		$course=$row['course'];
+	}
+}
+?>
+<?php 
+include("header.php");
+?>
+
+<div class="row">
+            <div class="col-lg-8">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Student Insert</h4>
+
+<form method="post">
+
+<p><input type="hidden" name="txtrno" value="<?php echo $rno ?>"></p>
+	<p>StudentName </p>
+
+	<p><input type="text" name="t1" value="<?php echo $sname ?>"></p>
+	<p>course </p>
+	<?php
+	if ($course=="bscit")
+	{
+		?>
+
+	<p><input type="radio"  checked name="r1" value="bscit"> bscit
+		<input type="radio" name="r1" value="mscit">mscit
+	</p>
+
+	<?php
+	}
+	else
+	{
+	?>
+	
+	<p><input type="radio" name="r1" value="bscit"> bscit
+		<input type="radio"  checked name="r1" value="mscit">mscit
+	</p>
+	
+	<?php
+	}
+	?>
+	
+	<p>Semester </p>
+	<p><select name=cmbsem  >
+		<?php
+		for($i=1;$i<=6;$i++)
+		{
+		if ($i==$sem)	
+		{
+		?>
+			<option selected=""><?php echo $i ?> </option>	
+		<?php
+		}
+		else
+		{
+		?>
+			<option><?php echo $i ?></option>	
+		<?php
+		}
+		}
+		?>
+</select>
+	</p>
+	<p>
+		<input type="submit" name="s1" value="submit">
+	</p>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<h1><a href="Db_student_insert.php">Insert Student </a></h1>
+<?php
+//Db_student_insert.php
+//mysqli_connect(servername,username,password,dbname);
+//$cn=mysqli_connect("localhost","root","root","mscit5");
+require_once("dbconnect.php");
+if (isset($_REQUEST['rollno']))
+{
+	$rno=$_REQUEST['rollno'];
+	$delsql="delete from student where rno=$rno";
+	$res1=mysqli_query($cn,$delsql);
+	echo "Deleted $res1";
+}
+$sql="select * from  student";
+$res=mysqli_query($cn,$sql);
+
+?>
+<?php 
+include("header.php");
+?>
+<div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Data table</h4>
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table id="order-listing" class="table">
+                      <thead>
+                        <tr>
+                            <th>RollNo</th>
+                            <th>Name</th>
+                            <th>Semester</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                             
+                        </tr>
+                      </thead>
+          
+	<?php
+	while($row=mysqli_fetch_row($res))
+	{
+		?>
+
+		<tr>
+			<td><?php echo $row[0] ?></td>
+			<td><?php echo $row[1] ?></td>
+			<td><?php echo $row[2] ?></td>
+			<td><?php echo $row[3] ?></td>
+<td><a href="Db_student_show.php?rollno=<?php echo $row[0]?>">Delete</a> <a href="Db_student_update.php?rollno=<?php echo $row[0]?>">Edit</a></td>
+		</tr>
+	<?php	
+	}
+	?>
+</table>
+ </div>
+</div>
+</div>
+</div>
+          </div>
+          
+          
+          
+          
+          
+  
+<?php
+//Db_student_insert.php
+//mysqli_connect(servername,username,password,dbname);
+//$cn=mysqli_connect("localhost","root","root","mscit5");
+require_once("dbconnect.php");
+$sql="select * from  student";
+$res=mysqli_query($cn,$sql);
+
+?>
+
+<table border="1" >
+	<tr>
+			<th>Rollno</th>
+			<th>StudentName</th>
+			<th>Semester</th>
+			<th>Course</th>
+		</tr>
+
+	<?php
+	//mysqli_fetch_array
+	while($row=mysqli_fetch_assoc($res))
+	{
+		?>
+
+		<tr>
+			<td><?php echo $row['rno'] ?></td>
+			<td><?php echo $row['sname'] ?></td>
+			<td><?php echo $row['sem'] ?></td>
+			<td><?php echo $row['course'] ?></td>
+		</tr>
+
+	<?php	
+	}
+	?>
+
+</table>
+
+
+
+
+
+
+
+
+
+
+<?php
+//Db_student_insert.php
+//mysqli_connect(servername,username,password,dbname);
+//$cn=mysqli_connect("localhost","root","root","mscit5");
+require_once("dbconnect.php");
+$sql="select * from  student";
+$res=mysqli_query($cn,$sql);
+
+?>
+
+<table border="1" >
+	<tr>
+			<th>Rollno</th>
+			<th>StudentName</th>
+			<th>Semester</th>
+			<th>Course</th>
+		</tr>
+
+	<?php
+	while($row=mysqli_fetch_object($res))
+	{
+		?>
+
+		<tr>
+			<td><?php echo $row->rno ?></td>
+			<td><?php echo $row->sname ?></td>
+			<td><?php echo $row->sem ?></td>
+			<td><?php echo $row->course ?></td>
+		</tr>
+
+	<?php	
+	}
+	?>
+
+</table>
+
+
+
+
+
+
+<?php
+$cn=mysqli_connect("localhost","root","root","mscit5"); 
+if (!$cn)
+{
+	die("Connection failed".mysqli_error());
+}
+?>
+
+
+
+
+
+
