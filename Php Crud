@@ -1,4 +1,117 @@
 <?php
+session_start();
+require_once("dbconnect.php");
+if (isset($_POST['s1']))
+{
+	$email=$_POST['txtemail'];
+    $pass=$_POST['txtpass'];
+    
+     $sql="Select * from admin where email='$email' and password='$pass'";
+ 	echo $sql;
+//$conn=mysqli_connect("localhost","root","root","mscit5"); 
+		if (!$conn)
+		{
+			die("Connection failed".mysqli_error());
+		}
+		$res=mysqli_query($conn,$sql);
+		$count=mysqli_num_rows($res);
+		echo "Total Rows $count";
+		if ($count>0)
+			 {
+			 	$_SESSION['user']=$email;
+			 	header("Location:adminhome.php");
+			 }
+		else
+			echo "Sorry";
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>My WebSite</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="node_modules/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="node_modules/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="images/favicon.png" />
+</head>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+      <div class="row">
+        <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-full-bg">
+          <div class="row w-100">
+            <div class="col-lg-4 mx-auto">
+              <div class="auth-form-dark text-left p-5">
+                <h2>Login</h2>
+                <h4 class="font-weight-light">Hello! let's get started</h4>
+                <a href="adminregister.php">New User</a>
+			
+
+<form method="post" class="pt-5">
+
+ <div class="form-group">
+	<label>Email </label>
+	<input type="text" name="txtemail" class="form-control "> <br/>
+	</div>
+	 <div class="form-group">
+	<label>Password </label>
+	<input type="text" name="txtpass" class="form-control"> <br/>
+	
+	</div>
+	<input type="submit" name="s1" class="btn btn-block btn-warning btn-lg font-weight-medium" value="Submit"> <br/>
+	
+</form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- row ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js"></script>
+  <!-- endinject -->
+  <!-- inject:js -->
+  <script src="js/off-canvas.js"></script>
+  <script src="js/hoverable-collapse.js"></script>
+  <script src="js/misc.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/todolist.js"></script>
+  <!-- endinject -->
+</body>
+
+
+</html>
+
+
+
+-----------------------------------------------------------------------------
+
+
+
+
+
+<?php
 //Db_student_insert.php
 //mysqli_connect(servername,username,password,dbname);
 //$cn=mysqli_connect("localhost","root","root","mscit5");
@@ -57,7 +170,7 @@ include("header.php");
 </div>
 
 
-
+-------------------------------------------------------------------------------------------
 
 
 <?php
@@ -165,7 +278,7 @@ include("header.php");
 </div>
 </div>
 
-
+-------------------------------------------------------------------------------------
 
 <h1><a href="Db_student_insert.php">Insert Student </a></h1>
 <?php
@@ -229,7 +342,7 @@ include("header.php");
           
           
           
-          
+ ===========================================================================================         
           
   
 <?php
@@ -272,7 +385,7 @@ $res=mysqli_query($cn,$sql);
 
 
 
-
+==========================================================================
 
 
 
